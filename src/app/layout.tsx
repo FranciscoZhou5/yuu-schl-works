@@ -1,7 +1,9 @@
-import Header from "@/components/Header";
 import "../styles/globals.css";
+import "tippy.js/dist/tippy.css";
 
 import { Inter } from "next/font/google";
+
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "Yuu",
