@@ -12,12 +12,8 @@ export default function Home() {
 
   useEffect(() => {
     async function getData() {
-      const response = await fetch("http://localhost:3000/api/school-works", { next: { revalidate: 10 } });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL!}/school-works`, { next: { revalidate: 10 } });
       const data: SchoolWork[] = await response.json();
-
-      // await new Promise((resolve) => {
-      //   setTimeout(() => resolve(null), 1000);
-      // });
 
       setData(data);
     }
