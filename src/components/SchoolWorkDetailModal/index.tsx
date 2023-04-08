@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { useSearchParams } from "next/navigation";
 import { Fragment, useCallback, useEffect } from "react";
 import Modal from "../Modal";
+import SubjectBadge from "../SubjectBadge";
 
 interface ISchoolWorkDetailModalProps {
   isOpen: boolean;
@@ -21,8 +22,16 @@ export default function SchoolWorkDetailModal({ isOpen, onClose, activeSchoolWor
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="inline-block w-full max-w-md py-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-slate-50 dark:bg-zinc-800 shadow-xl rounded-2xl">
-        <Dialog.Title as="h3" className="text-lg font-medium leading-6 px-6">
-          {activeSchoolWork?.title}
+        <Dialog.Title as="div" className="px-6 flex items-center">
+          <h3 className="text-lg font-medium leading-6 mr-2">{activeSchoolWork?.title}</h3>
+
+          <div>
+            {activeSchoolWork?.subjects.map((sub) => (
+              <SubjectBadge key={Math.random()} subject={sub}>
+                {sub}
+              </SubjectBadge>
+            ))}
+          </div>
         </Dialog.Title>
 
         <div className="mt-1 pb-2 border-b border-zinc-200 dark:border-zinc-600 px-6">
@@ -36,7 +45,7 @@ export default function SchoolWorkDetailModal({ isOpen, onClose, activeSchoolWor
         <div className="px-6">
           <button
             type="button"
-            className="inline-flex justify-center px-4 py-2 text-sm text-red-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 duration-300"
+            className="inline-flex justify-center px-4 py-2 text-sm hover:bg-gray-200 border border-zinc-200 rounded-md duration-200"
             onClick={onClose}
           >
             Fechar
