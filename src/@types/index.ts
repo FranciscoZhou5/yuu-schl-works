@@ -19,6 +19,7 @@ export type Subject =
 export interface SchoolWork {
   id: string;
   title: string;
+  description: string;
   subjects: Subject[];
   date: string;
 }

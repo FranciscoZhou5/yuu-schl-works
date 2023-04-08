@@ -47,7 +47,7 @@ export default function SchoolWorkCard({ data: { date, id, subjects, title }, on
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer mx-auto h-24 flex flex-col w-full lg:md:w-56 shadow-sm p-2 border rounded-md duration-200 border-zinc-200 hover:bg-gray-300 dark:hover:bg-zinc-800  dark:border-zinc-800"
+      className="cursor-pointer mx-auto h-24 flex flex-col w-full lg:md:w-56 shadow-sm p-2 border rounded-md duration-200 border-zinc-200 hover:bg-gray-200 dark:hover:bg-zinc-800 dark:border-zinc-800"
     >
       <div className="flex-grow">
         <h3 className="font-medium">{title}</h3>
