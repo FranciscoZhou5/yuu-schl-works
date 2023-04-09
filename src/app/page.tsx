@@ -55,14 +55,14 @@ export default function App() {
 
       <main className="max-w-[950px] pt-4 mx-auto px-4 md:px-8 lg:px-0">
         <div className="h-10 flex">
-          <div className="h-full w-full bg-gray-200 dark:bg-zinc-800 flex items-center border border-zinc-200 dark:border-zinc-800 rounded-md">
+          <div className="h-full w-full flex items-center border border-zinc-200 dark:border-zinc-800 rounded-md">
             <MagnifyingGlass size={18} className="mx-3" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Pesquisar..."
-              className="outline-none bg-transparent text-sm h-full w-full"
+              className="outline-none border-0 bg-transparent text-sm h-full w-full"
             />
           </div>
 
