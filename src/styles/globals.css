@@ -9,3 +9,7 @@ body {
 :is(span, p, svg) {
   @apply dark:text-gray-400 text-gray-600 text-sm;
 }
+
+:is(input, textarea) {
+  @apply bg-transparent outline-none border rounded-md p-2 text-sm border-zinc-200 dark:border-zinc-800;
+}
