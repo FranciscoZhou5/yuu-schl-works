@@ -18,8 +18,11 @@ export default function App() {
 
   useEffect(() => {
     async function getData() {
+      console.time();
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL!}/school-works`, { next: { revalidate: 10 } });
       const data: SchoolWork[] = await response.json();
+
+      console.timeEnd();
 
       setData(data);
     }
@@ -62,7 +65,7 @@ export default function App() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Pesquisar..."
-              className="outline-none border-0 bg-transparent text-sm h-full w-full"
+              className="outline-none border-0 bg-transparent text-sm h-full w-full focus:ring-0"
             />
           </div>
 
@@ -91,7 +94,7 @@ export default function App() {
                       value={item}
                       className="w-full cursor-pointer"
                     >
-                      {({ active, selected }) => (
+                      {({ active }) => (
                         <div
                           className={classNames(
                             active ? "dark:bg-zinc-800 bg-gray-200" : "dark:text-gray-400 text-gray-600",

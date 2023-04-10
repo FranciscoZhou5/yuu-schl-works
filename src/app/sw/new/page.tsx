@@ -1,11 +1,16 @@
 "use client";
 
+import { Subject } from "@/@types";
+import { completeSubjectsNameHandler, subjectsNameShort } from "@/common/subjects";
+import { subjectsColors } from "@/common/subjectsColors";
+import { badgeColorHandler } from "@/components/Badge";
+import SubjectBadge from "@/components/SubjectBadge";
 import { Listbox, Transition } from "@headlessui/react";
-import { ArrowLeft, CaretDown } from "@phosphor-icons/react";
+import { ArrowLeft, CaretDown, X } from "@phosphor-icons/react";
 import classNames from "classnames";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, Fragment, useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import * as z from "zod";
 
@@ -13,14 +18,17 @@ const createSchoolWorkSchema = z.object({
   title: z.string().min(1, { message: "Título é obrigatório" }),
   description: z.string().optional(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  selectedSubjects: z.array(z.string()).nonempty(),
 });
 
-export default function newSchoolWork() {
+export default function NewSchoolWork() {
   const [value, setValue] = useState({ endDate: null, startDate: null });
+  const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>([]);
   const [formState, setFormState] = useState({
     title: "",
     description: "",
     date: "",
+    selectedSubjects,
   });
 
   const searchParams = useSearchParams();
@@ -35,8 +43,6 @@ export default function newSchoolWork() {
 
     try {
       const validationResult = createSchoolWorkSchema.parse(formState);
-
-      console.log(validationResult);
     } catch (err) {
       console.log(err);
     }
@@ -56,6 +62,87 @@ export default function newSchoolWork() {
               {schoolWorkType === "Trabalho" ? "Novo trabalho" : `Nova ${schoolWorkType.toLowerCase()}`}
             </h2>
             <p> Você criará um card que será visível na tela principal para todos. </p>
+          </div>
+
+          <div className="flex flex-col max-w-xs space-y-2">
+            <label>Matérias</label>
+
+            <Listbox value={formState.selectedSubjects}>
+              <div className="relative w-full">
+                <Listbox.Button className="w-full overflow-x-hidden h-10 flex items-center px-2 rounded-md border border-zinc-200 bg-white dark:bg-zinc-800 dark:border-zinc-800">
+                  {formState.selectedSubjects.length === 0 ? (
+                    <span> Selecione uma matéria </span>
+                  ) : (
+                    formState.selectedSubjects.map((sub, index) => (
+                      <div
+                        key={Math.random()}
+                        className={classNames(
+                          "text-xs font-medium mr-2 px-1.5 py-0.5 rounded flex items-center",
+                          badgeColorHandler[subjectsColors[sub]]
+                        )}
+                      >
+                        <span className="mr-[2px] dark:text-gray-300">{sub}</span>
+
+                        <X
+                          size={16}
+                          className="dark:text-gray-300"
+                          onClick={() => {
+                            setFormState((oldState) => {
+                              const obj = { ...oldState };
+
+                              const arr = [...obj.selectedSubjects];
+                              arr.splice(index, 1);
+
+                              return {
+                                ...obj,
+                                selectedSubjects: arr,
+                              };
+                            });
+                          }}
+                        />
+                      </div>
+                    ))
+                  )}
+                </Listbox.Button>
+
+                <Transition
+                  enter="transition duration-100 ease-out"
+                  enterFrom="transform scale-95 opacity-0"
+                  enterTo="transform scale-100 opacity-100"
+                  leave="transition duration-75 ease-out"
+                  leaveFrom="transform scale-100 opacity-100"
+                  leaveTo="transform scale-95 opacity-0"
+                  className="absolute mt-1 border z-30 border-zinc-200  dark:border-zinc-800 w-full rounded-md bg-white dark:bg-zinc-900"
+                >
+                  <Listbox.Options className="cursor-pointer">
+                    {subjectsNameShort.map((subject) => (
+                      <Listbox.Option
+                        onClick={() => {
+                          setFormState((oldState) => {
+                            const obj = { ...oldState };
+                            const arr = obj.selectedSubjects.includes(subject) ? obj.selectedSubjects : [...obj.selectedSubjects, subject];
+
+                            return {
+                              ...obj,
+                              selectedSubjects: arr,
+                            };
+                          });
+                        }}
+                        key={Math.random()}
+                        value={subject}
+                      >
+                        {({ active }) => (
+                          <div className={classNames(active ? "dark:bg-zinc-800  bg-gray-200" : "", "py-1 px-2 flex")}>
+                            <SubjectBadge subject={subject}>{subject}</SubjectBadge>
+                            <span> {completeSubjectsNameHandler[subject]} </span>
+                          </div>
+                        )}
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </Transition>
+              </div>
+            </Listbox>
           </div>
 
           <div className="flex flex-col max-w-xs space-y-2">
@@ -134,7 +221,7 @@ export default function newSchoolWork() {
                 leave="transition duration-75 ease-out"
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
-                className="absolute mt-1 border border-zinc-200 dark:border-zinc-800 w-full rounded-md bg-slate-50 dark:bg-zinc-900"
+                className="absolute mt-1 border  border-zinc-200 dark:border-zinc-800 w-full rounded-md bg-slate-50 dark:bg-zinc-900"
               >
                 <Listbox.Options className="py-1">
                   {schoolWorkTypes.map((item) => (

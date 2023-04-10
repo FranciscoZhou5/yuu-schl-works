@@ -2,6 +2,7 @@ import { SchoolWork, Subject } from "@/@types";
 import Badge, { BadgeColors } from "../Badge";
 import { DateTime } from "luxon";
 import { MouseEventHandler } from "react";
+import { subjectsColors } from "@/common/subjectsColors";
 
 interface ISchoolWorkCardProps {
   data: SchoolWork;
@@ -9,25 +10,6 @@ interface ISchoolWorkCardProps {
 }
 
 export default function SchoolWorkCard({ data: { date, id, subjects, title }, onClick }: ISchoolWorkCardProps) {
-  const subjectsColors: { [k in Subject]: BadgeColors } = {
-    LPO: "purple",
-    BIO: "green",
-    QUI: "cyan",
-    LIN: "default",
-    HIS: "teal",
-    CLI: "indigo",
-    MAT: "pink",
-    ESP: "sky",
-    FIS: "emerald",
-    GEO: "violet",
-    EDF: "salem",
-    EST: "royal-blue",
-    LIT: "cello",
-    FIL: "wistful",
-    SET: "hoki",
-    SOC: "shiraz",
-  };
-
   function generateDateMessage(date: string) {
     const today = DateTime.now();
 
